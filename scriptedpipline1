@@ -1,0 +1,22 @@
+node('master') {
+    stage('continuous download') {
+        git 'https://github.com/atlurisiva/mavenoriginal.git'
+    }
+        stage('continuous Build') {
+        sh 'mvn package'
+    }
+        stage('continuous Deployment') {
+        deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.93.240:8080')], contextPath: 'testapp1', war: '**/*.war'
+    }
+        stage('continuous testing') {
+        git 'https://github.com/atlurisiva/FunctionalTestingoriginal.git'
+        sh 'java -jar /var/lib/jenkins/workspace/scriptedPipeline/testing.jar'
+    }
+        stage('continuous Delivery') {
+        input 'waiting for approval from the delivery manager'   
+        deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.89.67:8080')], contextPath: 'prodapp2', war: '**/*.war'
+    }
+}
+
+
+
