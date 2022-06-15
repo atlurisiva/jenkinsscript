@@ -1,29 +1,67 @@
 pipeline {
     agent any
-
-    //tools {
-        // Install the Maven version configured as "M3" and add it to the path.
-//        maven "M3"
-    //}
-
-    stages 
+    stages
     {
-        stage('Contionus Download') 
+        stage('Contionus Download')
         {
-	agent {
-		label 'master'
-		}
+            agent {
+                    label 'master'
+            }
             steps {
                 git 'https://github.com/atlurisiva/mavenoriginal.git'
             }
         }
         stage('continous build')
         {
-	agent { label 'master'}
+            agent 
+            { 
+                label 'master'
+            
+            }
             steps{
                 sh 'mvn package'
             }
-        
+
+        }
+        stage('continous Deployment')
+        {
+            agent 
+            { 
+                label 'master'
+            
+            }
+            steps{
+                deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.93.240:8080')], contextPath: 'testapp1', war: '**/*.war'
+            }
+
+        }
+        stage('continous testing')
+        {
+            agent 
+            { 
+                label 'myslave'
+            
+            }
+            steps{
+                git 'https://github.com/atlurisiva/FunctionalTestingoriginal.git'
+                sh 'java -jar /home/ubuntu/jenkinworkspace/workspace/declarativesinglebrnach/testing.jar'
+
+            }
+
+        }
+        stage('continous delivery')
+        {
+            agent 
+            { 
+                label 'master'
+            
+            }
+            steps{
+                input 'waiting for approval from the delivery manager'   
+                deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.89.67:8080')], contextPath: 'prodapp2', war: '**/*.war'
+
+            }
+
         }
     }
 }
