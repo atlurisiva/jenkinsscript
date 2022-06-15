@@ -10,6 +10,7 @@ pipeline {
     {
         stage('Contionus Download') 
         {
+	agent {master}
             steps {
                     checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/atlurisiva/mavenoriginal.git']]])
 
@@ -22,6 +23,7 @@ pipeline {
         }
         stage('continous build')
         {
+	agent {master}
             steps{
                 sh 'mvn package'
             }
