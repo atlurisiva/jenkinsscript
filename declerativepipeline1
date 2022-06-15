@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent master
 
     //tools {
         // Install the Maven version configured as "M3" and add it to the path.
@@ -10,7 +10,7 @@ pipeline {
     {
         stage('Contionus Download') 
         {
-	agent {master}
+	//agent {master}
             steps {
                     checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/atlurisiva/mavenoriginal.git']]])
 
@@ -23,7 +23,7 @@ pipeline {
         }
         stage('continous build')
         {
-	agent {master}
+	//agent {master}
             steps{
                 sh 'mvn package'
             }
