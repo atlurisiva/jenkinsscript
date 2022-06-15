@@ -8,7 +8,7 @@ pipeline {
                     label 'master'
             }
             steps {
-                git 'https://github.com/atlurisiva/mavenoriginal.git'
+                git 'https://github.com/atlurisiva/jenkinsscript.git'
             }
         }
         stage('continous build')

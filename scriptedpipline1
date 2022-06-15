@@ -1,6 +1,6 @@
 node('master') {
     stage('continuous download') {
-        git 'https://github.com/atlurisiva/mavenoriginal.git'
+        git 'https://github.com/atlurisiva/jenkinsscript.git'
     }
         stage('continuous Build') {
         sh 'mvn package'
