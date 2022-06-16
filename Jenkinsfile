@@ -1,25 +1,24 @@
-node('master') 
-{
-    stage('ContinuousDownload')
+node('master') {
+    stage('continous download')
     {
-        git 'https://github.com/intelliqittrainings/maven.git'             
+        git 'https://github.com/atlurisiva/jenkinsscript.git'
     }
-    stage('ContinuousBuild')
-    {
+    stage('continous build'){
         sh 'mvn package'
     }
-    stage('ContinuousDeployment')
+    stage('continous Deployment')
     {
-sh 'scp /home/ubuntu/.jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war ubuntu@172.31.23.20:/var/lib/tomcat9/webapps/testapp.war'
+        deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.93.240:8080')], contextPath: 'testapp1', war: '**/*.war'
+        
+    }
+    stage('continous testing')
+    {
+        git 'https://github.com/atlurisiva/FunctionalTestingoriginal.git'
+        sh 'java -jar /var/lib/jenkins/workspace/script/testing.jar'
+    }
+    stage('contionus delivery') {
+        input 'waiting for approval from delivery manager'
+        deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.89.67:8080')], contextPath: 'prodapp1', war: '**/*.war'
     }
 
-    stage('ContinuousTesting')
-    {
-        git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
-        sh 'java -jar /home/ubuntu/.jenkins/workspace/ScriptedPipeline/testing.jar'
-    }
-    stage('ContinuousDelivery')
-    {
-    
-    sh 'scp /home/ubuntu/.jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war ubuntu@172.31.28.60:/var/lib/tomcat9/webapps/prodapp.war'}
 }
