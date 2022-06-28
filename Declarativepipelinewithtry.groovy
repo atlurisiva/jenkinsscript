@@ -33,6 +33,7 @@ pipeline {
         success 
         {
             input message: 'waiting for approval', submitter: 'ram'
+            mail bcc: '', body: '', cc: '', from: '', replyTo: '', subject: 'jenkins ci-cd approval', to: 'atluri1988@gmail.com'
             deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.89.67:8080')], contextPath: 'prodapp1', war: '**/*.war'
         }
         failure {
