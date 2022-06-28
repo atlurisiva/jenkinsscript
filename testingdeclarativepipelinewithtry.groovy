@@ -37,7 +37,7 @@ pipeline {
             deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.89.67:8080')], contextPath: 'prodapp1', war: '**/*.war'
         }
         failure {
-            //mail bcc: '', body: 'Pushing the code into production is not successfully, please check ', cc: '', from: '', replyTo: '', subject: 'jenkins ci-cd failed', to: 'atluri1988@gmail.com'
+            mail bcc: '', body: 'Pushing the code into production is not successfully, please check ', cc: '', from: '', replyTo: '', subject: 'jenkins ci-cd failed', to: 'atluri1988@gmail.com'
         }
     }
 }
