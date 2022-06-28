@@ -1,9 +1,9 @@
 pipeline {
     agent any
-    {
         stages
         {
-            stage ('contionous download'){
+            stage ('contionous download')
+            {
                 steps {
                     script {
                         try {
@@ -47,7 +47,8 @@ pipeline {
                     }
                 }
             }
-            stage ('contionus testing') {
+            stage ('contionus testing') 
+            {
                 steps{
                     script{
                         try{
@@ -78,5 +79,4 @@ pipeline {
                 }
             }
         }
-    }
 }
