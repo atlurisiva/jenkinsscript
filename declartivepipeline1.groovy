@@ -3,20 +3,13 @@ pipeline {
     stages {
         stage('contionus Download') {
             agent { label 'master'}
-            steps {
-                git 'https://github.com/atlurisiva/jenkinsscript.git'
+            steps {git 'https://github.com/atlurisiva/jenkinsscript.git'}
             }
-
-        }
         stage('contionus build') {
-            steps {
-                sh 'mvn package'
-            }
+            steps { sh 'mvn package'}
         }
         stage('continous deplpyment') {
-            steps {
-                deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.93.240:8080')], contextPath: 'testapp123', war: '**/*.war'
-            }
+            steps {deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.93.240:8080')], contextPath: 'testapp123', war: '**/*.war'}
         }
         stage('contionus testing') {
             steps {
@@ -24,11 +17,14 @@ pipeline {
                 sh 'java -jar /var/lib/jenkins/workspace/declarative/testing.jar'
             }
          }
-        stage('contionous delivery') {
-            steps {
-                input 'waiting for approval '
-                deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.89.67:8080')], contextPath: 'prodapp123', war: '**/*.war'
-                           }
+    }
+    post {
+        success {
+                    input 'waiting for approval '
+                    deploy adapters: [tomcat9(credentialsId: '1b5f1a4c-ac6c-4d4f-9327-9e8d0432741d', path: '', url: 'http://172.31.89.67:8080')], contextPath: 'prodapp123', war: '**/*.war'
+                }
+        failure {
+            mail bcc: '', body: 'jenkins script failed ', cc: '', from: '', replyTo: '', subject: 'jenkins script failed', to: 'atluri1988@gmail.com'
         }
-}
+    }   
 }
