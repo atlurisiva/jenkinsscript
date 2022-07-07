@@ -4,7 +4,6 @@ pipeline {
         stage('contionus Download') {
             agent { label 'master'}
             steps 
-            
             {
                 script {
                     try {
@@ -14,7 +13,8 @@ pipeline {
                     }
                 }
                 
-            }
+            } 
+        }
         stage('contionus build') {
             steps { sh 'mvn package'}
         }
