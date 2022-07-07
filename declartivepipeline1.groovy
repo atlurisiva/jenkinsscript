@@ -9,7 +9,6 @@ pipeline {
                 script {
                     try {
                         git 'https://github.com/atlurisiva/jenkinsscript.git'}
-                    }
                     catch(Exception e1) {
                         mail bcc: '', body: 'contionous download is failed', cc: '', from: '', replyTo: '', subject: 'contionus download is failed', to: 'atluri1988@gmail.com'
                     }
