@@ -21,7 +21,7 @@ pipeline {
         stage('contionus testing') {
             steps {
                 git 'https://github.com/atlurisiva/FunctionalTestingoriginal.git'
-                sh 'java -jar /var/lib/jenkins/workspace/declartive/testing.jar'
+                sh 'java -jar /var/lib/jenkins/workspace/declarative/testing.jar'
             }
          }
         stage('contionous delivery') {
